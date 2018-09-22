@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import argparse
 import numpy as np
 
 # Configure matplotlib for use with virtualenv
@@ -11,15 +10,8 @@ from matplotlib import pyplot as plt
 import librosa
 import librosa.display as disp
 
-def main():
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument('-i', '--input', dest='input_path',
-                        help='Path to input music file')
-
-    args = parser.parse_args()
-
-    y, sr = librosa.load(args.input_path)
+def display_song_as_pyplot(song_path):
+    y, sr = librosa.load(song_path)
 
     # Compute spectrogram magnitude and phase
     S_full, phase = librosa.magphase(librosa.stft(y))
@@ -32,6 +24,4 @@ def main():
     plt.tight_layout()
 
     plt.show()
-
-if __name__ == '__main__':
-    main()
+    

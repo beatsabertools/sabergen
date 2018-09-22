@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 librosa = "*"
 matplotlib = "*"
+flask = "*"
 
 [dev-packages]
 pylint = "*"
