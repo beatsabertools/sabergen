@@ -16,3 +16,8 @@ Once pipenv is installed,
 $ cd /path/to/sabergen/
 $ pipenv install
 ```
+
+You'll also need ffmpeg
+```
+http://www.ffmpeg.org/download.html
+```
