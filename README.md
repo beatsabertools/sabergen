@@ -10,7 +10,7 @@ $ xcode-select --install
 $ brew install pipenv
 ```
 For other operating systems, see https://pipenv.readthedocs.io/en/latest/install/#installing-pipenv
-## Installing pythong and dependencies
+## Installing python and dependencies
 Once pipenv is installed,
 ```
 $ cd /path/to/sabergen/

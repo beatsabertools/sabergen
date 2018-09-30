@@ -56,6 +56,7 @@ class beatSaberSong(object):
 
             # Convert with subprocess call
             # Command will generate a new file with the same name, except .ogg
+            # -c:a codec, -y overwrite if output exists, -q quality specifier
             convert = subprocess.run(["ffmpeg","-y", "-i", song_path, "-c:a", "libvorbis", "-q:a", "4", ogg_path], stdout=subprocess.PIPE, stderr=subprocess.STDOUT )
 
             #Set song path to the new .ogg file
@@ -67,7 +68,7 @@ class beatSaberSong(object):
                 return
         except Exception as e:
             # Failed to convert song. Probably dump out of the program at this point
-            raise(e)
+            raise
     
     def display_song_as_pyplot(self):
         y, sr = librosa.load(self.song_path)
