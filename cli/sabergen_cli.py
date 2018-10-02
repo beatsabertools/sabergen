@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
-from libsabergen.sabergen import beatSaberSong
+from sabergen import beatSaberSong
 
 def main():
     parser = argparse.ArgumentParser()
