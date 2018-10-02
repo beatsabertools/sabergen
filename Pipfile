@@ -4,12 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-librosa = "*"
-matplotlib = "*"
-flask = "*"
+librosa = "==0.6.2"
+matplotlib = "==3.0.0"
+flask = "==1.0.2"
+libsabergen = {editable = true, path = "./libsabergen"}
 
 [dev-packages]
-pylint = "*"
+pylint = "==2.1.1"
 
 [requires]
 python_version = "3.7"

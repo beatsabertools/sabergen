@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import flask
-from libsabergen import sabergen
+import sabergen
 
 app = flask.Flask(__name__)
 
