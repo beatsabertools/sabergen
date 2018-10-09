@@ -36,6 +36,12 @@ jobs:
   - script: |
       python_path=`python -m site --user-base`
       pipenv="${python_path}/bin/pipenv"
+      ${pipenv} run pylint --rcfile .pylintrc libsabergen cli webserver || true
+    displayName: 'Run pylint'
+
+  - script: |
+      python_path=`python -m site --user-base`
+      pipenv="${python_path}/bin/pipenv"
       ${pipenv} run python cli/sabergen_cli.py --help
     displayName: 'Test invocation of CLI'
 
