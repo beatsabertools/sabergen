@@ -6,7 +6,9 @@ sabergen command line tool
 
 import argparse
 import logging
-from sabergen import BeatSaberSong
+
+from sabergen.core import BeatSaberSong
+from sabergen import output
 
 def main():
     """
@@ -16,6 +18,7 @@ def main():
     parser = argparse.ArgumentParser()
 
     parser.add_argument('-i', '--input-path', help='Path to input music file', required=True)
+    parser.add_argument('-o', '--output-path', help='Path to output directory containing Beat Saber level', required=True)
     parser.add_argument('-p', '--pyplot', action='store_true', help='Display song as pyplot')
     # Todo: subparsers rather than --pyplot or --show-beats; makes args easier to sort
     parser.add_argument('-b', '--show-beats', action='store_true',
@@ -28,7 +31,7 @@ def main():
     log_level = logging.WARNING if not args.debug else logging.INFO
     logging.basicConfig(level=log_level)
 
-    song = BeatSaberSong()
+    song = BeatSaberSong(args.output_path)
     song.load(args.input_path)
 
     if args.pyplot:
@@ -38,6 +41,8 @@ def main():
     if args.show_beats:
         logging.info('Genearting BPM...')
         logging.info(song.get_beats(args.bpm))
+
+    output.create_song(song)
 
 if __name__ == '__main__':
     main()

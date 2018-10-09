@@ -226,7 +226,7 @@ redefining-builtins-modules=six.moves,past.builtins,future.builtins,builtins,io
 [FORMAT]
 
 # Expected format of line ending, e.g. empty (any line ending), LF or CRLF.
-expected-line-ending-format=
+expected-line-ending-format=LF
 
 # Regexp for a line that is allowed to be longer than the limit.
 ignore-long-lines=^\s*(# )?<?https?://\S+>?$
@@ -335,6 +335,9 @@ function-naming-style=snake_case
 good-names=i,
            j,
            k,
+           f,
+           fp,
+           e,
            ex,
            Run,
            _
