@@ -11,3 +11,5 @@ libsabergen = {editable = true, path = "./libsabergen"}
 
 [dev-packages]
 pylint = "==2.1.1"
+rope = "==0.11.0"
+"autopep8" = "==1.4"
