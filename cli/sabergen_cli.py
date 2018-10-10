@@ -5,6 +5,7 @@ sabergen command line tool
 """
 
 import argparse
+import logging
 from sabergen import BeatSaberSong
 
 def main():
@@ -24,16 +25,19 @@ def main():
 
     args = parser.parse_args()
 
-    song = BeatSaberSong(args.debug)
+    log_level = logging.WARNING if not args.debug else logging.INFO
+    logging.basicConfig(level=log_level)
+
+    song = BeatSaberSong()
     song.load(args.input_path)
 
     if args.pyplot:
-        print('Plotting song...')
+        logging.info('Plotting song...')
         song.display_song_as_pyplot()
 
     if args.show_beats:
-        print('Genearting BPM...')
-        print(song.get_beats(args.bpm))
+        logging.info('Genearting BPM...')
+        logging.info(song.get_beats(args.bpm))
 
 if __name__ == '__main__':
     main()

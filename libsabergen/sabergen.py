@@ -4,6 +4,7 @@
 sabergen library to drive song generation for Beat Saber
 """
 
+import logging
 import numpy as np
 
 import librosa
@@ -22,8 +23,7 @@ class BeatSaberSong:
     audio file into a Beat Saber song.
     """
 
-    def __init__(self, debug=False):
-        self.debug = debug
+    def __init__(self):
         self.time_series = None
         self.sampling_rate = None
         self.audio_path = None
@@ -75,22 +75,19 @@ class BeatSaberSong:
 
             # Command will generate a new file with the same name, except .ogg
             # -c:a codec, -y overwrite if output exists, -q quality specifier
-            subprocess.run("ffmpeg -y -i {} -c:a libvorbis -q:a 8 {}".format(song_path, ogg_path),
-                           shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+            result = subprocess.run(
+                "ffmpeg -y -i {} -c:a libvorbis -q:a 8 {}".format(song_path, ogg_path),
+                shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
 
-            if self.debug:
-                # TODO: How best to return stdout/stderr from a library?
-                pass
+            # ffmpeg writes most of its normal output to stderr
+            logging.info(result.stdout)
+            logging.info(result.stderr)
 
             return ogg_path
 
         except subprocess.CalledProcessError as err:
-            # FIXME: Need to find a better way to return a result object to callers
-            # since we likely shouldn't blindly produce stdout/stderr. Perhaps take in a logger?
-            # What logging libraries are popular in Python?
-            print(err.args)
-            print(err.stderr)
-            print(err.stdout)
+            logging.critical(err.stderr)
+            logging.warning(err.stdout)
             raise
 
     def display_song_as_pyplot(self):
