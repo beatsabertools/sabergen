@@ -40,7 +40,7 @@ def main():
 
     if args.show_beats:
         logging.info('Genearting BPM...')
-        logging.info(song.get_beats(args.bpm))
+        logging.info(song.get_beats())
 
     output.create_song(song)
 

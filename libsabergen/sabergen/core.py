@@ -7,7 +7,7 @@ sabergen library to drive song generation for Beat Saber
 import os
 
 import numpy as np
-import mutagen
+from mutagen.oggvorbis import OggVorbis
 
 import librosa
 import librosa.display as disp
@@ -31,6 +31,8 @@ class BeatSaberSong:
         self.output_path = os.path.abspath(os.path.expanduser(output_path))
         self.audio_path = None
 
+        self.cover_art = None
+
         self.time_series = None
         self.sampling_rate = None
 
@@ -48,11 +50,12 @@ class BeatSaberSong:
 
         self.time_series, self.sampling_rate = librosa.load(self.audio_path)
 
-        metadata = mutagen.File(self.audio_path)
-        self.name = metadata.tags['title'][0]
-        self.album = metadata.tags['album'][0]
-        self.artist = metadata.tags['artist'][0]
-        self.bpm = int(metadata.tags['TBPM'][0])
+        ogg = OggVorbis(self.audio_path)
+        self.name = ogg.tags['title'][0]
+        self.album = ogg.tags['album'][0]
+        self.artist = ogg.tags['artist'][0]
+        self.bpm = int(ogg.tags.get('TBPM', [120])[0])
+        self.cover_art = convert.get_cover_art(ogg)
 
     def display_song_as_pyplot(self):
         "Plots spectrogram magnitude using matplotlib."

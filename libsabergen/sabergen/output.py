@@ -37,8 +37,11 @@ def create_song(song: BeatSaberSong):
     if not os.path.exists(song.output_path):
         os.mkdir(song.output_path)
 
-    audio_destination = os.path.join(song.output_path, 'music.ogg')
-    copyfile(song.audio_path, audio_destination)
+    audio_filename = 'audio.ogg'
+    copyfile(song.audio_path, os.path.join(song.output_path, audio_filename))
+
+    cover_filename = 'cover.jpg'
+    song.cover_art.save(os.path.join(song.output_path, cover_filename))
 
     song_info = {
         'songName': song.name,
@@ -47,8 +50,8 @@ def create_song(song: BeatSaberSong):
         'beatsPerMinute': song.bpm,
         'previewStartTime': 10.0,
         'previewDuration': 20.0,
-        'audioPath': audio_destination,
-        'coverImagePath': '',
+        'audioPath': audio_filename,
+        'coverImagePath': cover_filename,
         'oneSaber': False,
         'noteHitVolume': 1.0,
         'noteMissVolume': 1.0,
