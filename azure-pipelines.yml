@@ -36,7 +36,7 @@ jobs:
   - script: |
       python_path=`python -m site --user-base`
       pipenv="${python_path}/bin/pipenv"
-      ${pipenv} run pylint --rcfile .pylintrc libsabergen cli webserver || true
+      ${pipenv} run pylint --errors-only --rcfile .pylintrc libsabergen cli webserver
     displayName: 'Run pylint'
 
   - script: |
