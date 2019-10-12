@@ -10,8 +10,6 @@ jobs:
     vmImage: 'Ubuntu 16.04'
   strategy:
     matrix:
-      Python35:
-        python.version: '3.5'
       Python36:
         python.version: '3.6'
       Python37:
@@ -19,6 +17,9 @@ jobs:
     maxParallel: 3
 
   steps:
+  - script: sudo apt-get install libsndfile1
+    displayName: 'Install libsndfile for librosa'
+
   - task: UsePythonVersion@0
     inputs:
       versionSpec: '$(python.version)'
