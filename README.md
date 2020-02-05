@@ -4,26 +4,18 @@ Beat Saber song generator
 
 ## Installation / Development
 
-### Installing Python/Pipenv
+### Installing Python/Poetry
 
-You probably already have python.  Just make sure you have 3.5 or higher.  Only chumps use 2.\*
-To get pipenv on OSX, you'll need xcode-select, then brew install pipenv.
-
-```bash
-xcode-select --install
-brew install pipenv
-```
-
-For other operating systems, see [pipenv's documentation](https://pipenv.readthedocs.io/en/latest/install/#installing-pipenv).
-
-### Installing python and dependencies
-
-Once pipenv is installed,
+Ensure you have Python 3.6 or higher installed and then run:
 
 ```bash
-cd /path/to/sabergen/
-pipenv install --dev
+make init
 ```
+
+To invoke Poetry and initialize your virtual environment. If you don't yet have
+Poetry please [see their documentation to install it](https://python-poetry.org/docs/#installation).
+
+### Installing Dependencies
 
 You'll also need [ffmpeg](https://www.ffmpeg.org/download.html). Note that you will need
 to have the libvorbis encoder.
