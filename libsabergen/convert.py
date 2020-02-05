@@ -4,19 +4,20 @@
 Conversion utilities
 """
 
-import os
-import io
-import subprocess
-import logging
 import base64
-
-from PIL import Image
+import io
+import logging
+import os
+import subprocess
 
 import mutagen
-from mutagen.oggvorbis import OggVorbis
 from mutagen.flac import Picture
+from mutagen.oggvorbis import OggVorbis
+from PIL import Image
+
 
 THUMBNAIL_DIMENSION = 512
+
 
 def is_ogg(song_path):
     "Using the magic number of a file, determine if this is an .ogg file."
@@ -27,13 +28,14 @@ def is_ogg(song_path):
         song_bytes = song.read(4)
 
         # Turn those hex bytes into a string.
-        hex_bytes = ''.join(['{:02X}'.format(byte) for byte in song_bytes])
+        hex_bytes = "".join(["{:02X}".format(byte) for byte in song_bytes])
 
         # Magic number of ogg is OggS in ASCII
-        if hex_bytes == '4F676753':
+        if hex_bytes == "4F676753":
             return True
 
     return False
+
 
 def get_cover_art_from_song(song_path):
     """
@@ -46,8 +48,8 @@ def get_cover_art_from_song(song_path):
 
     # TODO: Look to add support for more tag formats.
     if isinstance(file_type.tags, mutagen.id3.ID3):
-        apic_frames = [file_type.tags[t] for t in file_type.tags.keys() if t.startswith('APIC')]
-        
+        apic_frames = [file_type.tags[t] for t in file_type.tags.keys() if t.startswith("APIC")]
+
         cover_frame = apic_frames[0]
         if len(apic_frames) > 1:
             cover_frame = [f for f in apic_frames if f.type == mutagen.id3.PictureType.COVER_FRONT][0]
@@ -60,9 +62,10 @@ def get_cover_art_from_song(song_path):
         pic.mime = cover_frame.mime
         pic.width = THUMBNAIL_DIMENSION
         pic.height = THUMBNAIL_DIMENSION
-        pic.depth = 16 # color depth
+        pic.depth = 16  # color depth
 
     return pic
+
 
 def __downscale_cover_art(data):
     "Given data bytes, scale down the image to a reasonable size."
@@ -73,6 +76,7 @@ def __downscale_cover_art(data):
     resized_img.save(dest_bytes, format="jpeg")
     return dest_bytes.getvalue()
 
+
 def convert_to_ogg(song_path):
     """
     Converts file at the provided path to ogg.
@@ -80,11 +84,11 @@ def convert_to_ogg(song_path):
     WARNING: Care shall be taken by the caller of this function as it will explictly
     overwrite files that match the non-.ogg filename.
     """
-    
+
     try:
         # Setup new file name and path.
         filename, _ = os.path.splitext(os.path.basename(song_path))
-        ogg_filename = "{}.ogg".format(filename)    
+        ogg_filename = "{}.ogg".format(filename)
         ogg_path = os.path.join(os.path.dirname(song_path), ogg_filename)
 
         # Command will generate a new file with the same name, except .ogg
@@ -92,7 +96,11 @@ def convert_to_ogg(song_path):
         # -codec:a audio codec, -quality:a audio quality specifier
         result = subprocess.run(
             "ffmpeg -y -i {} -vn -codec:a libvorbis -quality:a 10 {}".format(song_path, ogg_path),
-            shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=True,
+        )
 
         # ffmpeg writes most of its normal output to stderr
         logging.info(result.stdout)
@@ -123,10 +131,11 @@ def convert_to_ogg(song_path):
         logging.warning(err.stdout)
         raise
 
+
 def get_cover_art(ogg: OggVorbis) -> Image:
     "Read out cover art as a Pillow Image."
-    ascii_bytes = ogg.tags['METADATA_BLOCK_PICTURE'][0]
-    base64_bytes = ascii_bytes.encode('utf-8')
+    ascii_bytes = ogg.tags["METADATA_BLOCK_PICTURE"][0]
+    base64_bytes = ascii_bytes.encode("utf-8")
     decoded_bytes = base64.b64decode(base64_bytes)
     pic = Picture(data=decoded_bytes)
     byte_stream = io.BytesIO(pic.data)

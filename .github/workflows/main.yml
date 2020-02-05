@@ -1,0 +1,60 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-18.04]
+        python-version: ["3.6", "3.7", "3.8"]
+
+    name: ${{ matrix.python-version }} (${{ matrix.os }})
+
+    steps:
+      - name: Install libsndfile
+        run: sudo apt-get install libsndfile1
+
+      - name: Setup Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: x64
+
+      - name: Install Poetry
+        uses: dschep/install-poetry-action@v1.2
+        with:
+          create_virtualenvs: yes
+
+      - name: Configure Poetry
+        run: poetry config virtualenvs.in-project true
+
+      - name: Confirm Environment
+        run: |
+          which poetry
+          poetry --version
+          which python
+          python --version
+
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Cache Poetry venv
+        uses: actions/cache@v1
+        with:
+          path: .venv
+          key: ${{ runner.os }}-poetry-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock ') }}
+
+      - name: Create venv
+        run: make init
+
+      - name: Lint
+        run: make lint-ci
+
+      - name: Test
+        run: make tests
+
+      - name: Validate
+        run: make check

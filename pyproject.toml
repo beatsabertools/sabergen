@@ -1,0 +1,65 @@
+[tool.poetry]
+name = "libsabergen"
+version = "0.1.0"
+description = "Library to aid in generating Beat Saber songs"
+authors = ["beatsabertools contributors"]
+license = "GPL-3.0"
+
+[tool.poetry.dependencies]
+python = "^3.6"
+librosa = "*"
+mutagen = "*"
+matplotlib = "*"
+pillow = "*"
+tornado = "*"
+
+[tool.poetry.dev-dependencies]
+pylint = "*"
+black = {version = "*", allow-prereleases = true}
+pytest = "*"
+isort = "*"
+ptpython = "*"
+flake8 = "^3.7.9"
+
+[tool.black]
+line-length = 120
+target-version = ["py36"]
+exclude = '''
+(
+\.eggs
+| \.git
+| \.mypy_cache
+| \.tox
+| \.venv
+| \.vscode
+| \.pytest_cache
+| __pycache__
+| build
+| dist
+)
+'''
+
+[tool.isort]
+line_length = 120
+multi_line_output = 3
+lines_after_imports = 2
+force_grid_wrap = 0
+combine_as_imports = true
+include_trailing_comma = true
+skip_glob = [
+    ".eggs",
+    ".git",
+    ".mypy_cache",
+    ".tox",
+    ".venv",
+    ".vscode",
+    ".pytest_cache",
+    "__pycache__",
+    "build",
+    "dist",
+]
+atomic = true
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+

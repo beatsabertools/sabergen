@@ -1,8 +1,9 @@
 import setuptools
 
+
 setuptools.setup(
     name="libsabergen",
-    version="0.0.1",
+    version="0.1.0",
     author="beatsabertools Contributors",
     author_email="",
     description="libsabergen description",
@@ -12,7 +13,8 @@ setuptools.setup(
         "Programming Language :: Python :: 3 :: Only",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
-        "License :: OSI Approved :: MIT License",
+        "Programming Language :: Python :: 3.8",
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: OS Independent",
-    ]
+    ],
 )

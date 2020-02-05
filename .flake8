@@ -1,0 +1,4 @@
+[flake8]
+ignore = E231
+exclude = .eggs,.git,.mypy_cache,.tox,.venv,.vscode,.pytest_cache,__pycache__,build,dist
+max-line-length = 120

@@ -6,20 +6,18 @@ sabergen library to drive song generation for Beat Saber
 
 import os
 
-import numpy as np
-from mutagen.oggvorbis import OggVorbis
-
 import librosa
 import librosa.display as disp
-
-# Configure matplotlib for use with virtualenv
 import matplotlib
-matplotlib.use('TkAgg')
-# Ignore the pylint error as we need to specify, explicitly, a backend
-# pylint: disable=wrong-import-position
+import numpy as np
 from matplotlib import pyplot as plt
+from mutagen.oggvorbis import OggVorbis
 
-from sabergen import convert
+from . import convert
+
+
+matplotlib.use("WebAgg")
+
 
 class BeatSaberSong:
     """
@@ -51,10 +49,10 @@ class BeatSaberSong:
         self.time_series, self.sampling_rate = librosa.load(self.audio_path)
 
         ogg = OggVorbis(self.audio_path)
-        self.name = ogg.tags['title'][0]
-        self.album = ogg.tags['album'][0]
-        self.artist = ogg.tags['artist'][0]
-        self.bpm = int(ogg.tags.get('TBPM', [120])[0])
+        self.name = ogg.tags["title"][0]
+        self.album = ogg.tags["album"][0]
+        self.artist = ogg.tags["artist"][0]
+        self.bpm = int(ogg.tags.get("TBPM", [120])[0])
         self.cover_art = convert.get_cover_art(ogg)
 
     def display_song_as_pyplot(self):
@@ -64,8 +62,9 @@ class BeatSaberSong:
 
         idx = slice(*librosa.time_to_frames([30, 35], sr=self.sampling_rate))
         plt.figure(figsize=(12, 4))
-        disp.specshow(librosa.amplitude_to_db(s_full[:, idx], ref=np.max),
-                      y_axis='log', x_axis='time', sr=self.sampling_rate)
+        disp.specshow(
+            librosa.amplitude_to_db(s_full[:, idx], ref=np.max), y_axis="log", x_axis="time", sr=self.sampling_rate,
+        )
         plt.colorbar()
         plt.tight_layout()
 
@@ -73,13 +72,11 @@ class BeatSaberSong:
 
     def get_tempo(self):
         "Identify tempo of the audio"
-        tempo, _ = librosa.beat.beat_track(
-            self.time_series, self.sampling_rate, bpm=self.bpm)
+        tempo, _ = librosa.beat.beat_track(self.time_series, self.sampling_rate, bpm=self.bpm)
         return tempo
 
     def get_beats(self):
         "Identify beat timestamps in the audio."
-        _, beat_frames = librosa.beat.beat_track(
-            self.time_series, self.sampling_rate, bpm=self.bpm)
+        _, beat_frames = librosa.beat.beat_track(self.time_series, self.sampling_rate, bpm=self.bpm)
         beat_times = librosa.frames_to_time(beat_frames, sr=self.sampling_rate)
         return beat_times

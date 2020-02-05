@@ -7,8 +7,9 @@ sabergen command line tool
 import argparse
 import logging
 
-from sabergen.core import BeatSaberSong
-from sabergen import output
+from libsabergen import output
+from libsabergen.core import BeatSaberSong
+
 
 def main():
     """
@@ -17,14 +18,17 @@ def main():
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('-i', '--input-path', help='Path to input music file', required=True)
-    parser.add_argument('-o', '--output-path', help='Path to output directory containing Beat Saber level', required=True)
-    parser.add_argument('-p', '--pyplot', action='store_true', help='Display song as pyplot')
+    parser.add_argument("-i", "--input-path", help="Path to input music file", required=True)
+    parser.add_argument(
+        "-o", "--output-path", help="Path to output directory containing Beat Saber level", required=True,
+    )
+    parser.add_argument("-p", "--pyplot", action="store_true", help="Display song as pyplot")
     # Todo: subparsers rather than --pyplot or --show-beats; makes args easier to sort
-    parser.add_argument('-b', '--show-beats', action='store_true',
-                        help='Show beats upon which there is a beat')
-    parser.add_argument('--bpm', type=int, help='Estimated beats per minute', default=120)
-    parser.add_argument('-d', '--debug', action='store_true', help='Print debug info')
+    parser.add_argument(
+        "-b", "--show-beats", action="store_true", help="Show beats upon which there is a beat",
+    )
+    parser.add_argument("--bpm", type=int, help="Estimated beats per minute", default=120)
+    parser.add_argument("-d", "--debug", action="store_true", help="Print debug info")
 
     args = parser.parse_args()
 
@@ -35,14 +39,15 @@ def main():
     song.load(args.input_path)
 
     if args.pyplot:
-        logging.info('Plotting song...')
+        logging.info("Plotting song...")
         song.display_song_as_pyplot()
 
     if args.show_beats:
-        logging.info('Genearting BPM...')
+        logging.info("Genearting BPM...")
         logging.info(song.get_beats())
 
     output.create_song(song)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
